@@ -12,7 +12,10 @@ from .serializer import CourseSerializer,AssessmentSerializer
 
 """
 API V1
+
+!!! Realizando CRUD com rest_framework-generics
 """
+
 class CourseAPiView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer 
@@ -43,18 +46,32 @@ class AssessmentAPiView(generics.RetrieveUpdateDestroyAPIView):
         return get_object_or_404(self.get_queryset(),pk=self.kwargs.get('assessment_pk'))
     
 """
-API V2
+API V2 
+
+
+!!! Realizando CRUD com rest_framework-iewSets
 """
 
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
-    
+
+# Adicionando um decorators pois viewsets quando cria os endpoints não reconhece os relacionamentos
+# É necessário criar um decorator para realizar esse relacionamento
+
 
     @action(detail=True,methods=['get'])
     def assessments(self,resquest,pk=None):
-        course = self.get_object()
-        serializer = AssessmentSerializer(course.assessment.all(),many=True)
+#Adicionando paginação no decorators pois o django.filter só reconhece as tabelas raiz
+        self.pagination_class.page_size = 1
+        assessments = Assessment.objects.filter(course_id=pk)
+        page = self.paginate_queryset(assessments)
+
+        if page is not None:
+            serializer = AssessmentSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = AssessmentSerializer(assessments,many=True)
         return Response(serializer.data)
 
 """

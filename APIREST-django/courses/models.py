@@ -17,6 +17,7 @@ class Course(Base):
     class Meta:
         verbose_name = "Course"
         verbose_name_plural = "Courses"
+        ordering = ['id']
 
     def __str__(self):
         return f"{self.title}"
@@ -33,6 +34,7 @@ class Assessment(Base):
         verbose_name = "Assessment"
         verbose_name_plural = "Assessments"
         unique_together = ['email','course']
+        ordering = ['id']
 
     def __str__(self):
         return f"{self.name} avaliou o curso {self.course} com nota {self.assessment}"
