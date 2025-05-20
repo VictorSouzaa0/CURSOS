@@ -4,7 +4,7 @@ from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
+from rest_framework import mixins
 
 from .models import Course,Assessment
 from .serializer import CourseSerializer,AssessmentSerializer
@@ -57,7 +57,19 @@ class CourseViewSet(viewsets.ModelViewSet):
         serializer = AssessmentSerializer(course.assessment.all(),many=True)
         return Response(serializer.data)
 
-
+"""
 class AssesstsViewSet(viewsets.ModelViewSet):
+    queryset = Assessment.objects.all()
+    serializer_class = AssessmentSerializer
+"""
+
+class AssesstsViewSet(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet):
+
     queryset = Assessment.objects.all()
     serializer_class = AssessmentSerializer
