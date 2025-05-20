@@ -21,7 +21,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 >>> token = Token.objects.create(user=victor)
 >>> token.key
 
-Token : 238720a6c1639aca0825f6c4e0a2ad098825dac3'
+Token victor: '238720a6c1639aca0825f6c4e0a2ad098825dac3'
+Token Facility: 'a39431c126f4948c847b94a3467f7e6a34ea71d0'
 """
 
 from pathlib import Path

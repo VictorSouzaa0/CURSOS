@@ -8,7 +8,9 @@ from rest_framework import mixins
 
 from .models import Course,Assessment
 from .serializer import CourseSerializer,AssessmentSerializer
+from .permissions import IsSuperUser
 
+from rest_framework import permissions
 
 """
 API V1
@@ -53,6 +55,10 @@ API V2
 """
 
 class CourseViewSet(viewsets.ModelViewSet):
+    permission_classes = (
+        IsSuperUser,
+        permissions.DjangoModelPermissions,
+    )
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
