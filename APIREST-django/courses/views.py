@@ -75,11 +75,16 @@ class CourseViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 """
+
+!! - ViewsSets.modelViewSet : Te permite ter acesso a todos os métodos
+
 class AssesstsViewSet(viewsets.ModelViewSet):
     queryset = Assessment.objects.all()
     serializer_class = AssessmentSerializer
 """
 
+
+#Mixins permite que você insira de forma manual quais CRUD's você deseja fazer
 class AssesstsViewSet(
     mixins.ListModelMixin,
     mixins.CreateModelMixin,
